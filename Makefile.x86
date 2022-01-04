@@ -1,0 +1,27 @@
+
+TARGET = sdl2048
+#HOST = arm-linux-
+SOURCES = . 
+CFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.c))
+CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
+OFILES = $(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
+
+CFLAGS = -Wall -g `sdl-config --cflags` -DX86
+CXXFLAGS = $(CFLAGS)
+LDFLAGS = `sdl-config --libs` -lSDL_ttf -lSDL_image -lSDL_mixer
+
+$(TARGET): $(OFILES)
+	$(CXX) $(OFILES) -o $@ $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(TARGET) $(OFILES)
+
+
+install:
+	echo do nothing for install
